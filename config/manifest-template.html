@@ -1,0 +1,12 @@
+<!-- manifest start -->
+<%=
+  htmlWebpackPlugin.files.css.map(href =>
+    `<link rel="stylesheet" type="text/css" href="{{BASE_PATH}}${href}">`
+  ).join("\n")
+%>
+<%=
+  htmlWebpackPlugin.files.js.map(src =>
+    `<script data-module="${htmlWebpackPlugin.options.moduleName}" defer type="text/javascript" src="{{BASE_PATH}}${src}"></script>`
+  ).join("\n")
+%>
+<!-- manifest end -->
