@@ -149,8 +149,8 @@ module.exports = function(webpackEnv) {
       // require.resolve('webpack-dev-server/client') + '?/',
       // require.resolve('webpack/hot/dev-server'),
       // isEnvDevelopment &&
-      //   require.resolve('react-dev-utils/webpackHotDevClient'),
-        // custom hot dev client
+      //  require.resolve('react-dev-utils/webpackHotDevClient'),
+      // custom hot dev client for connectting to other ports
       isEnvDevelopment && require.resolve('./hotDevClientFactory'),
       // Finally, this is your app's code:
       paths.appIndexJs,

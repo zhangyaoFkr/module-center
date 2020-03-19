@@ -8,28 +8,28 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
 const defaultPlaceholder = '<!--# include file="modules" -->';
-const MANIFEST_PATH = `module-a/static/html/module-manifest.html`;
+const MANIFEST_PATH = `static/html/module-manifest.html`;
 
 async function fetchManifest(modules) {
   let htmls = await Promise.all(
-    modules.map(async opt => {
-      const uri = url.resolve(opt.url, MANIFEST_PATH);
+    modules.map(async m => {
+      const uri = url.resolve(`${m.path}:${m.port}`, `${m.name}/${MANIFEST_PATH}`);
       // eslint-disable-next-line no-console
-      console.info(`fetch manifest "${opt.name}":`, uri);
+      console.info(`fetch manifest "${m.name}":`, uri);
 
       return await request
         .get(uri)
         .set('Accept', 'text/html')
         .then(res => {
           // eslint-disable-next-line no-console
-          console.info(`manifest "${opt.name}" fetched:`, res.text);
+          console.info(`manifest "${m.name}" fetched:`, res.text);
 
           return res.text;
         })
         .catch(err => {
           // eslint-disable-next-line no-console
           console.error(err.text ? err.text : String(err));
-          return `<!-- fetch ${opt.name} manifest failed -->`;
+          return `<!-- fetch ${m.name} manifest failed -->`;
         });
     })
   );

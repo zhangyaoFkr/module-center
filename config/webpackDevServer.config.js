@@ -10,6 +10,7 @@ const paths = require("./paths");
 const getHttpsConfig = require("./getHttpsConfig");
 
 const injectModule = require("./injectModule");
+const subModules = require('./subModules.config');
 
 const host = process.env.HOST || "0.0.0.0";
 const sockHost = process.env.WDS_SOCKET_HOST;
@@ -105,9 +106,8 @@ module.exports = function(proxy, allowedHost) {
     // `proxy` is run between `before` and `after` `webpack-dev-server` hooks
     proxy,
     before(app, server) {
-      const modules = [{ name: "module-a", url: "http://localhost:3001" }, { name: "module-b", url: "http://localhost:3002" }];
-      app.use(injectModule(modules, ""));
-
+      // inject sub-modules' manifest
+      app.use(injectModule(subModules, ""));
       // Keep `evalSourceMapMiddleware` and `errorOverlayMiddleware`
       // middlewares before `redirectServedPath` otherwise will not have any effect
       // This lets us fetch source contents from webpack for the error overlay
